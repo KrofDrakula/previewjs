@@ -1,5 +1,5 @@
 {
-  "name": "@previewjs/screenshot",
+  "name": "@previewjs/chromeless",
   "version": "0.0.0",
   "license": "MIT",
   "author": {
@@ -16,7 +16,7 @@
   "homepage": "https://previewjs.com",
   "type": "commonjs",
   "scripts": {
-    "prepublish": "cd .. && pnpm turbo run build --scope=@previewjs/screenshot --no-deps --include-dependencies",
+    "prepublish": "cd .. && pnpm turbo run build --scope=@previewjs/chromeless --no-deps --include-dependencies",
     "build": "rimraf dist && pnpm tsc && pnpm tsc -p client/tsconfig.json && vite build client"
   },
   "dependencies": {
