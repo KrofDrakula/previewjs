@@ -8,12 +8,7 @@ test.describe.configure({ mode: "parallel" });
 test.describe("react/refreshing", () => {
   let preview: Awaited<ReturnType<typeof startPreview>> | null = null;
 
-  test.afterEach(async () => {
-    if (preview) {
-      await preview.stop();
-      preview = null;
-    }
-  });
+  test.afterEach(() => preview?.stop());
 
   for (const version of [16, 17, 18]) {
     test.describe(`v${version}`, () => {
