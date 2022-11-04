@@ -1,28 +1,33 @@
-import { createWorkspace, loadPreviewEnv } from "@previewjs/core";
+import {
+  createWorkspace,
+  FrameworkPluginFactory,
+  loadPreviewEnv,
+} from "@previewjs/core";
 import type { PreviewEvent } from "@previewjs/iframe";
-import reactFrameworkPlugin from "@previewjs/plugin-react";
-import solidFrameworkPlugin from "@previewjs/plugin-solid";
-import svelteFrameworkPlugin from "@previewjs/plugin-svelte";
-import vue2FrameworkPlugin from "@previewjs/plugin-vue2";
-import vue3FrameworkPlugin from "@previewjs/plugin-vue3";
-import { createFileSystemReader } from "@previewjs/vfs";
+import { createFileSystemReader, Reader } from "@previewjs/vfs";
 import express from "express";
 import fs from "fs";
 import path from "path";
 import type { Page } from "playwright";
 import type { Component } from "../client/src";
 
-export async function openPreview(page: Page, rootDirPath: string) {
+export async function openPreview({
+  page,
+  rootDirPath,
+  frameworkPluginFactories,
+  reader = createFileSystemReader(),
+  port = 3250,
+}: {
+  page: Page;
+  rootDirPath: string;
+  frameworkPluginFactories: FrameworkPluginFactory[];
+  reader?: Reader;
+  port?: number;
+}) {
   const env = await loadPreviewEnv({
     rootDirPath,
     setupEnvironment: async () => ({}),
-    frameworkPluginFactories: [
-      reactFrameworkPlugin,
-      solidFrameworkPlugin,
-      svelteFrameworkPlugin,
-      vue2FrameworkPlugin,
-      vue3FrameworkPlugin,
-    ],
+    frameworkPluginFactories,
   });
   if (!env) {
     throw new Error(
@@ -33,17 +38,16 @@ export async function openPreview(page: Page, rootDirPath: string) {
   const workspace = await createWorkspace({
     rootDirPath,
     frameworkPlugin: env.frameworkPlugin,
-    logLevel: "error",
+    logLevel: "info",
     versionCode: "0.0.0-dev",
     middlewares: [express.static(clientDirPath)],
-    reader: createFileSystemReader(),
+    reader,
   });
   if (!workspace) {
     throw new Error(
       `No workspace could be created for directory: ${rootDirPath}`
     );
   }
-  const port = 3250;
   await workspace.preview.start(async () => port);
   await page.goto(`http://localhost:${port}`);
   return {

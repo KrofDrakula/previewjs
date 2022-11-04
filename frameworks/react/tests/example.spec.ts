@@ -2,15 +2,16 @@ import { test } from "@playwright/test";
 import { RPCs } from "@previewjs/api";
 import { generateInvocation } from "@previewjs/properties";
 import path from "path";
-import { openPreview } from ".";
-import type { Component } from "../client/src";
-import { getPreviewIframe } from "./iframe";
+import type { Component } from "../../../chromeless/client/src";
+import { openPreview } from "../../../chromeless/src";
+import { getPreviewIframe } from "../../../chromeless/src/iframe";
 
 test("example", async ({ page }) => {
-  const { workspace, renderComponent } = await openPreview(
+  const { workspace, renderComponent } = await openPreview({
     page,
-    "/Users/fwouts/dev/hungry"
-  );
+    rootDirPath: "/Users/fwouts/dev/hungry",
+    frameworkPluginFactories: [],
+  });
   const found = await workspace.localRpc(RPCs.DetectComponents, {});
   const components: Component[] = [];
   for (const [filePath, fileComponents] of Object.entries(found.components)) {
