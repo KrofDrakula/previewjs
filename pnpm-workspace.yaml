@@ -19,6 +19,7 @@ packages:
   - "properties"
   - "serializable-values"
   - "server"
+  - "testing"
   - "test-apps/*"
   - "!test-apps/_tmp_*"
   - "smoke-test-apps/*"

@@ -3,22 +3,16 @@ import {
   FrameworkPluginFactory,
   loadPreviewEnv,
 } from "@previewjs/core";
-import type { PreviewEvent } from "@previewjs/iframe";
 import { createFileSystemReader, Reader } from "@previewjs/vfs";
 import express from "express";
 import fs from "fs";
 import path from "path";
-import type { Page } from "playwright";
-import type { Component } from "../client/src";
 
-export async function openPreview({
-  page,
+export async function createChromelessWorkspace({
   rootDirPath,
   frameworkPluginFactories,
   reader = createFileSystemReader(),
-  port = 3250,
 }: {
-  page: Page;
   rootDirPath: string;
   frameworkPluginFactories: FrameworkPluginFactory[];
   reader?: Reader;
@@ -48,27 +42,7 @@ export async function openPreview({
       `No workspace could be created for directory: ${rootDirPath}`
     );
   }
-  await workspace.preview.start(async () => port);
-  await page.goto(`http://localhost:${port}`);
-  return {
-    workspace,
-    renderComponent: async (component: Component) => {
-      let onReady: () => void;
-      const ready = new Promise<void>((resolve) => {
-        onReady = resolve;
-      });
-      await page.exposeFunction("onIframeEvent", (event: PreviewEvent) => {
-        console.log("RECEIVED", event);
-        if (event.kind === "rendering-done") {
-          onReady();
-        }
-      });
-      await page.evaluate((component) => {
-        window.renderComponent(component);
-      }, component);
-      await ready;
-    },
-  };
+  return workspace;
 }
 
 function findClientDir(dirPath: string): string {
