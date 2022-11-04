@@ -1,6 +1,6 @@
 import { createController, PreviewEvent } from "@previewjs/iframe";
 
-type Component = {
+export type Component = {
   filePath: string;
   componentName: string;
   customVariantPropsSource: string;

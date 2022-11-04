@@ -8,12 +8,6 @@
         margin: 0;
       }
 
-      #button {
-        position: absolute;
-        left: 0;
-        top: 0;
-      }
-
       iframe {
         width: 100vw;
         height: 100vh;
@@ -23,10 +17,5 @@
   <body>
     <iframe id="iframe" frameborder="0"></iframe>
     <script type="module" src="./src/index.tsx"></script>
-    <script>
-      window.onload = () => {
-        render(__COMPONENTS__);
-      };
-    </script>
   </body>
 </html>
