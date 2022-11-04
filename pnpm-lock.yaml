@@ -8,7 +8,7 @@ importers:
     specifiers:
       '@types/inquirer': 8.2.4
       '@types/license-checker': 25.0.3
-      '@types/node': 18.11.8
+      '@types/node': 18.11.9
       '@typescript-eslint/eslint-plugin': ^5.42.0
       '@typescript-eslint/parser': ^5.42.0
       assert-never: 1.2.1
@@ -20,7 +20,7 @@ importers:
       execa: 5.1.1
       inquirer: 8.2.5
       license-checker: 25.0.1
-      npm: 8.19.2
+      npm: 8.19.3
       prettier: 2.7.1
       ts-node: 10.9.1
       turbo: 1.6.3
@@ -28,7 +28,7 @@ importers:
     devDependencies:
       '@types/inquirer': 8.2.4
       '@types/license-checker': 25.0.3
-      '@types/node': 18.11.8
+      '@types/node': 18.11.9
       '@typescript-eslint/eslint-plugin': 5.42.0_6xw5wg2354iw4zujk2f3vyfrzu
       '@typescript-eslint/parser': 5.42.0_wyqvi574yv7oiwfeinomdzmc3m
       assert-never: 1.2.1
@@ -40,9 +40,9 @@ importers:
       execa: 5.1.1
       inquirer: 8.2.5
       license-checker: 25.0.1
-      npm: 8.19.2
+      npm: 8.19.3
       prettier: 2.7.1
-      ts-node: 10.9.1_7jzoohtnaegavowzoeccrsbhty
+      ts-node: 10.9.1_cbe7ovvae6zqfnmtgctpgpys54
       turbo: 1.6.3
       typescript: 4.8.4
 
@@ -67,7 +67,7 @@ importers:
       '@previewjs/plugin-vue3': workspace:*
       '@types/express': 4.17.14
       '@types/fs-extra': 9.0.13
-      '@types/node': 18.11.8
+      '@types/node': 18.11.9
       '@types/react': 18.0.24
       '@types/react-dom': 18.0.8
       '@vitejs/plugin-react': 2.2.0
@@ -97,7 +97,7 @@ importers:
       '@previewjs/plugin-vue3': link:../frameworks/vue3
       '@types/express': 4.17.14
       '@types/fs-extra': 9.0.13
-      '@types/node': 18.11.8
+      '@types/node': 18.11.9
       '@types/react': 18.0.24
       '@types/react-dom': 18.0.8
       '@vitejs/plugin-react': 2.2.0_vite@3.2.2
@@ -134,7 +134,7 @@ importers:
       chokidar-cli: 3.0.0
       clsx: ^1.2.1
       concurrently: ^7.5.0
-      framer-motion: ^7.6.2
+      framer-motion: ^7.6.4
       mobx: ^6.6.1
       mobx-react-lite: ^3.4.0
       monaco-editor: ^0.34.1
@@ -145,7 +145,7 @@ importers:
       tailwindcss: 3.2.1
       typescript: 4.8.4
       unbuild: 0.9.1
-      vitest: 0.24.4
+      vitest: 0.24.5
     dependencies:
       '@fortawesome/fontawesome-svg-core': 6.2.0
       '@fortawesome/free-brands-svg-icons': 6.2.0
@@ -161,7 +161,7 @@ importers:
       assert-never: 1.2.1
       axios: 1.1.3
       clsx: 1.2.1
-      framer-motion: 7.6.2_biqbaboplfbrettd7655fr4n2y
+      framer-motion: 7.6.4_biqbaboplfbrettd7655fr4n2y
       mobx: 6.6.1
       mobx-react-lite: 3.4.0_m26jawr67gnusmh4egzqtnhxru
       monaco-editor: 0.34.1
@@ -177,7 +177,7 @@ importers:
       tailwindcss: 3.2.1_postcss@8.4.18
       typescript: 4.8.4
       unbuild: 0.9.1
-      vitest: 0.24.4
+      vitest: 0.24.5
 
   chromeless:
     specifiers:
@@ -210,11 +210,11 @@ importers:
 
   config:
     specifiers:
-      '@types/node': 18.11.8
+      '@types/node': 18.11.9
       unbuild: 0.9.1
       vite: 3.2.2
     devDependencies:
-      '@types/node': 18.11.8
+      '@types/node': 18.11.9
       unbuild: 0.9.1
       vite: 3.2.2
 
@@ -296,7 +296,7 @@ importers:
       '@previewjs/vfs': workspace:*
       typescript: ^4.8.4
       unbuild: 0.9.1
-      vitest: 0.24.4
+      vitest: 0.24.5
     dependencies:
       '@previewjs/core': link:../core
       '@previewjs/type-analyzer': link:../type-analyzer
@@ -304,7 +304,7 @@ importers:
     devDependencies:
       '@previewjs/vfs': link:../vfs
       unbuild: 0.9.1
-      vitest: 0.24.4
+      vitest: 0.24.5
 
   dev-workspace:
     specifiers:
@@ -334,7 +334,7 @@ importers:
       '@previewjs/vfs': ^1.2.9
       '@types/fs-extra': ^9.0.13
       '@types/lodash': ^4.14.187
-      '@types/node': ^18.11.8
+      '@types/node': ^18.11.9
       assert-never: ^1.2.1
       caller-callsite: ^4.1.0
       chalk: ^4.1.2
@@ -350,7 +350,7 @@ importers:
       '@previewjs/vfs': link:../vfs
       '@types/fs-extra': 9.0.13
       '@types/lodash': 4.14.187
-      '@types/node': 18.11.8
+      '@types/node': 18.11.9
       assert-never: 1.2.1
       caller-callsite: 4.1.0
       chalk: 4.1.2
@@ -358,7 +358,7 @@ importers:
       fs-extra: 10.1.0
       lodash: 4.17.21
       playwright: 1.27.1
-      ts-node: 10.9.1_7jzoohtnaegavowzoeccrsbhty
+      ts-node: 10.9.1_cbe7ovvae6zqfnmtgctpgpys54
     devDependencies:
       '@previewjs/iframe': link:../iframe
       unbuild: 0.9.1
@@ -381,7 +381,7 @@ importers:
       rimraf: 3.0.2
       typescript: ^4.8.4
       vite: 3.2.2
-      vitest: 0.24.4
+      vitest: 0.24.5
     dependencies:
       '@previewjs/csf3': link:../../csf3
       '@previewjs/type-analyzer': link:../../type-analyzer
@@ -400,7 +400,7 @@ importers:
       react: 18.2.0
       rimraf: 3.0.2
       vite: 3.2.2
-      vitest: 0.24.4
+      vitest: 0.24.5
 
   frameworks/react/preview:
     specifiers:
@@ -430,7 +430,7 @@ importers:
       typescript: ^4.8.4
       vite: 3.2.2
       vite-plugin-solid: ^2.3.10
-      vitest: 0.24.4
+      vitest: 0.24.5
     dependencies:
       '@previewjs/csf3': link:../../csf3
       '@previewjs/type-analyzer': link:../../type-analyzer
@@ -442,7 +442,7 @@ importers:
       rimraf: 3.0.2
       solid-js: 1.6.1
       vite: 3.2.2
-      vitest: 0.24.4
+      vitest: 0.24.5
 
   frameworks/solid/preview:
     specifiers:
@@ -466,7 +466,7 @@ importers:
       svelte: ^3.52.0
       typescript: ^4.8.4
       vite: 3.2.2
-      vitest: 0.24.4
+      vitest: 0.24.5
     dependencies:
       '@previewjs/csf3': link:../../csf3
       '@previewjs/type-analyzer': link:../../type-analyzer
@@ -480,7 +480,7 @@ importers:
       '@types/fs-extra': 9.0.13
       rimraf: 3.0.2
       vite: 3.2.2
-      vitest: 0.24.4
+      vitest: 0.24.5
 
   frameworks/svelte/preview:
     specifiers:
@@ -504,7 +504,7 @@ importers:
       typescript: ^4.8.4
       vite: 3.2.2
       vite-plugin-vue2: ^2.0.2
-      vitest: 0.24.4
+      vitest: 0.24.5
       vue: ^2.7.13
       vue-template-compiler: ^2.7.13
     dependencies:
@@ -522,7 +522,7 @@ importers:
       '@types/fs-extra': 9.0.13
       rimraf: 3.0.2
       vite: 3.2.2
-      vitest: 0.24.4
+      vitest: 0.24.5
 
   frameworks/vue2/preview:
     specifiers:
@@ -552,7 +552,7 @@ importers:
       rimraf: 3.0.2
       typescript: ^4.8.4
       vite: 3.2.2
-      vitest: 0.24.4
+      vitest: 0.24.5
       vue: ^3
     dependencies:
       '@previewjs/csf3': link:../../csf3
@@ -570,7 +570,7 @@ importers:
       '@types/fs-extra': 9.0.13
       rimraf: 3.0.2
       vite: 3.2.2
-      vitest: 0.24.4
+      vitest: 0.24.5
 
   frameworks/vue3/preview:
     specifiers:
@@ -605,11 +605,11 @@ importers:
     specifiers:
       '@previewjs/api': workspace:*
       '@previewjs/loader': workspace:*
-      '@types/node': 18.11.8
+      '@types/node': 18.11.9
       chalk: ^4.1.2
       commander: ^9.4.1
       cross-env: 7.0.3
-      esbuild: 0.15.12
+      esbuild: 0.15.13
       open: ^8.4.0
       rimraf: 3.0.2
       shx: 0.3.4
@@ -618,28 +618,28 @@ importers:
     devDependencies:
       '@previewjs/api': link:../../api
       '@previewjs/loader': link:../../loader
-      '@types/node': 18.11.8
+      '@types/node': 18.11.9
       chalk: 4.1.2
       commander: 9.4.1
       cross-env: 7.0.3
-      esbuild: 0.15.12
+      esbuild: 0.15.13
       open: 8.4.0
       rimraf: 3.0.2
       shx: 0.3.4
-      ts-node-dev: 2.0.0_7jzoohtnaegavowzoeccrsbhty
+      ts-node-dev: 2.0.0_cbe7ovvae6zqfnmtgctpgpys54
       typescript: 4.8.4
 
   integrations/intellij/controller:
     specifiers:
       '@previewjs/server': workspace:*
-      esbuild: 0.15.12
+      esbuild: 0.15.13
       rimraf: 3.0.2
       shx: 0.3.4
       ts-node-dev: 2.0.0
       typescript: 4.8.4
     devDependencies:
       '@previewjs/server': link:../../../server
-      esbuild: 0.15.12
+      esbuild: 0.15.13
       rimraf: 3.0.2
       shx: 0.3.4
       ts-node-dev: 2.0.0_cbe7ovvae6zqfnmtgctpgpys54
@@ -650,7 +650,7 @@ importers:
       '@previewjs/server': workspace:*
       '@types/vscode': 1.71.0
       cross-env: 7.0.3
-      esbuild: 0.15.12
+      esbuild: 0.15.13
       exclusive-promises: ^1.0.3
       execa: 5.1.1
       ovsx: 0.5.2
@@ -662,7 +662,7 @@ importers:
       '@previewjs/server': link:../../server
       '@types/vscode': 1.71.0
       cross-env: 7.0.3
-      esbuild: 0.15.12
+      esbuild: 0.15.13
       exclusive-promises: 1.0.3
       execa: 5.1.1
       ovsx: 0.5.2
@@ -717,7 +717,7 @@ importers:
       prettier: ^2.7.1
       typescript: ^4.8.4
       unbuild: 0.9.1
-      vitest: 0.24.4
+      vitest: 0.24.5
     dependencies:
       '@faker-js/faker': 7.6.0
       '@previewjs/type-analyzer': link:../type-analyzer
@@ -727,14 +727,14 @@ importers:
     devDependencies:
       '@types/prettier': 2.7.1
       unbuild: 0.9.1
-      vitest: 0.24.4
+      vitest: 0.24.5
 
   server:
     specifiers:
       '@previewjs/api': workspace:*
       '@previewjs/core': workspace:*
       '@previewjs/loader': workspace:*
-      '@types/node': 18.11.8
+      '@types/node': 18.11.9
       exclusive-promises: ^1.0.3
       is-wsl: 2.2.0
       rimraf: 3.0.2
@@ -745,11 +745,11 @@ importers:
       '@previewjs/api': link:../api
       '@previewjs/core': link:../core
       '@previewjs/loader': link:../loader
-      '@types/node': 18.11.8
+      '@types/node': 18.11.9
       exclusive-promises: 1.0.3
       is-wsl: 2.2.0
       rimraf: 3.0.2
-      ts-node-dev: 2.0.0_7jzoohtnaegavowzoeccrsbhty
+      ts-node-dev: 2.0.0_cbe7ovvae6zqfnmtgctpgpys54
       typescript: 4.8.4
       unbuild: 0.9.1
 
@@ -1909,7 +1909,7 @@ importers:
       prettier: ^2.7.1
       typescript: ^4.8.4
       unbuild: 0.9.1
-      vitest: 0.24.4
+      vitest: 0.24.5
     dependencies:
       '@previewjs/vfs': link:../vfs
       assert-never: 1.2.1
@@ -1920,7 +1920,7 @@ importers:
       '@types/prettier': 2.7.1
       lodash: 4.17.21
       unbuild: 0.9.1
-      vitest: 0.24.4
+      vitest: 0.24.5
 
   vfs:
     specifiers:
@@ -1929,7 +1929,7 @@ importers:
       chokidar: ^3.5.3
       fs-extra: ^10.1.0
       unbuild: 0.9.1
-      vitest: 0.24.4
+      vitest: 0.24.5
     dependencies:
       assert-never: 1.2.1
       chokidar: 3.5.3
@@ -1937,7 +1937,7 @@ importers:
     devDependencies:
       '@types/fs-extra': 9.0.13
       unbuild: 0.9.1
-      vitest: 0.24.4
+      vitest: 0.24.5
 
 packages:
 
@@ -10964,7 +10964,7 @@ packages:
   /@types/fs-extra/9.0.13:
     resolution: {integrity: sha512-nEnwB++1u5lVDM2UI4c1+5R+FYaKfaAzS4OococimjVm3nQw3TuzH5UNsocrcTBbhnerblyHj4A49qXbIiZdpA==}
     dependencies:
-      '@types/node': 18.11.8
+      '@types/node': 18.11.9
 
   /@types/glob/7.2.0:
     resolution: {integrity: sha512-ZUxbzKl0IfJILTS6t7ip5fQQM/J3TJYubDm3nMbgubNNYS62eXeUpoLUC8/7fJNiFYHTrGPQn7hspDUzIHX3UA==}
@@ -11091,9 +11091,6 @@ packages:
 
   /@types/node/16.11.52:
     resolution: {integrity: sha512-GnstYouCa9kbYokBCWEVrszJ1P2rGAQpKrqACHKuixkaT8XGu8nsqHvEUIGqDs5vwtsJ7LrYqnPDKRD1V+M39A==}
-
-  /@types/node/18.11.8:
-    resolution: {integrity: sha512-uGwPWlE0Hj972KkHtCDVwZ8O39GmyjfMane1Z3GUBGGnkZ2USDq7SxLpVIiIHpweY9DS0QTDH0Nw7RNBsAAZ5A==}
 
   /@types/node/18.11.9:
     resolution: {integrity: sha512-CRpX21/kGdzjOpFsZSkcrXMGIBWMGNIHXXBVFSH+ggkftxg+XYP20TESbh+zFvFj3EQOl5byk0HTRn1IL6hbqg==}
@@ -20557,8 +20554,8 @@ packages:
     dependencies:
       map-cache: 0.2.2
 
-  /framer-motion/7.6.2_biqbaboplfbrettd7655fr4n2y:
-    resolution: {integrity: sha512-YRr+KaC+1MlLx7iArVyjZRpc0QXI7H0XIOJrdol+dF1+WLQJwS2sP04KGq808BG+byD36UAmAt4YqObE5YFLtw==}
+  /framer-motion/7.6.4_biqbaboplfbrettd7655fr4n2y:
+    resolution: {integrity: sha512-Ac3Bl9M45fS8A0ibOUnYMSCfjaCrFfWT0uh0/MZVm/DGWcr5IsRRinWRiVGABA9RGJgn4THehqcn235JVQkucQ==}
     peerDependencies:
       react: ^18.0.0 || 18
       react-dom: ^18.0.0 || 18
@@ -25543,9 +25540,9 @@ packages:
     dependencies:
       path-key: 3.1.1
 
-  /npm/8.19.2:
-    resolution: {integrity: sha512-MWkISVv5f7iZbfNkry5/5YBqSYJEDAKSJdL+uzSQuyLg+hgLQUyZynu3SH6bOZlvR9ZvJYk2EiJO6B1r+ynwHg==}
-    engines: {node: ^12.13.0 || ^14.15.0 || >=16}
+  /npm/8.19.3:
+    resolution: {integrity: sha512-0QjmyPtDxSyMWWD8I91QGbrgx9KzbV6C9FK1liEb/K0zppiZkr5KxXc990G+LzPwBHDfRjUBlO9T1qZ08vl9mA==}
+    engines: {node: ^12.13.0 || ^14.15.0 || >=16.0.0}
     hasBin: true
     dev: true
     bundledDependencies:
@@ -25556,7 +25553,6 @@ packages:
       - '@npmcli/fs'
       - '@npmcli/map-workspaces'
       - '@npmcli/package-json'
-      - '@npmcli/promise-spawn'
       - '@npmcli/run-script'
       - abbrev
       - archy
@@ -32371,34 +32367,6 @@ packages:
       webpack: 4.46.0
     dev: true
 
-  /ts-node-dev/2.0.0_7jzoohtnaegavowzoeccrsbhty:
-    resolution: {integrity: sha512-ywMrhCfH6M75yftYvrvNarLEY+SUXtUvU8/0Z6llrHQVBx12GiFk5sStF8UdfE/yfzk9IAq7O5EEbTQsxlBI8w==}
-    engines: {node: '>=0.8.0'}
-    hasBin: true
-    peerDependencies:
-      node-notifier: '*'
-      typescript: '*'
-    peerDependenciesMeta:
-      node-notifier:
-        optional: true
-    dependencies:
-      chokidar: 3.5.3
-      dynamic-dedupe: 0.3.0
-      minimist: 1.2.6
-      mkdirp: 1.0.4
-      resolve: 1.22.1
-      rimraf: 2.7.1
-      source-map-support: 0.5.21
-      tree-kill: 1.2.2
-      ts-node: 10.9.1_7jzoohtnaegavowzoeccrsbhty
-      tsconfig: 7.0.0
-      typescript: 4.8.4
-    transitivePeerDependencies:
-      - '@swc/core'
-      - '@swc/wasm'
-      - '@types/node'
-    dev: true
-
   /ts-node-dev/2.0.0_cbe7ovvae6zqfnmtgctpgpys54:
     resolution: {integrity: sha512-ywMrhCfH6M75yftYvrvNarLEY+SUXtUvU8/0Z6llrHQVBx12GiFk5sStF8UdfE/yfzk9IAq7O5EEbTQsxlBI8w==}
     engines: {node: '>=0.8.0'}
@@ -32426,36 +32394,6 @@ packages:
       - '@swc/wasm'
       - '@types/node'
     dev: true
-
-  /ts-node/10.9.1_7jzoohtnaegavowzoeccrsbhty:
-    resolution: {integrity: sha512-NtVysVPkxxrwFGUUxGYhfux8k78pQB3JqYBXlLRZgdGUqTO5wU/UyHop5p70iEbGhB7q5KmiZiU0Y3KlJrScEw==}
-    hasBin: true
-    peerDependencies:
-      '@swc/core': '>=1.2.50'
-      '@swc/wasm': '>=1.2.50'
-      '@types/node': '*'
-      typescript: '>=2.7'
-    peerDependenciesMeta:
-      '@swc/core':
-        optional: true
-      '@swc/wasm':
-        optional: true
-    dependencies:
-      '@cspotcode/source-map-support': 0.8.1
-      '@tsconfig/node10': 1.0.9
-      '@tsconfig/node12': 1.0.11
-      '@tsconfig/node14': 1.0.3
-      '@tsconfig/node16': 1.0.3
-      '@types/node': 18.11.8
-      acorn: 8.8.1
-      acorn-walk: 8.2.0
-      arg: 4.1.3
-      create-require: 1.1.1
-      diff: 4.0.2
-      make-error: 1.3.6
-      typescript: 4.8.4
-      v8-compile-cache-lib: 3.0.1
-      yn: 3.1.1
 
   /ts-node/10.9.1_cbe7ovvae6zqfnmtgctpgpys54:
     resolution: {integrity: sha512-NtVysVPkxxrwFGUUxGYhfux8k78pQB3JqYBXlLRZgdGUqTO5wU/UyHop5p70iEbGhB7q5KmiZiU0Y3KlJrScEw==}
@@ -33750,7 +33688,7 @@ packages:
       terser:
         optional: true
     dependencies:
-      esbuild: 0.15.12
+      esbuild: 0.15.13
       postcss: 8.4.18
       resolve: 1.22.1
       rollup: 2.78.1
@@ -33780,7 +33718,7 @@ packages:
       terser:
         optional: true
     dependencies:
-      esbuild: 0.15.12
+      esbuild: 0.15.13
       postcss: 8.4.18
       resolve: 1.22.1
       rollup: 2.79.1
@@ -33859,8 +33797,8 @@ packages:
       - terser
     dev: true
 
-  /vitest/0.24.4:
-    resolution: {integrity: sha512-4ratHSyVEJPtBLV00uhL4Wj3Pmandc9rsxUkE0q9peNOfaOgGF4lEepdkaXGRi9AGFKr1GRVtjGOJ6Fp2lCpEg==}
+  /vitest/0.24.5:
+    resolution: {integrity: sha512-zw6JhPUHtLILQDe5Q39b/SzoITkG+R7hcFjuthp4xsi6zpmfQPOZcHodZ+3bqoWl4EdGK/p1fuMiEwdxgbGLOA==}
     engines: {node: '>=v14.16.0'}
     hasBin: true
     peerDependencies:
@@ -33883,7 +33821,7 @@ packages:
     dependencies:
       '@types/chai': 4.3.3
       '@types/chai-subset': 1.3.3
-      '@types/node': 18.11.8
+      '@types/node': 18.11.9
       chai: 4.3.6
       debug: 4.3.4
       local-pkg: 0.4.2
