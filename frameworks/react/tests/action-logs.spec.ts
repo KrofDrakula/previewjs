@@ -26,22 +26,20 @@ for (const reactVersion of [16, 17, 18]) {
       test("emits action event for auto-generated callbacks", async () => {
         await preview.fileManager.update(
           "src/Button.tsx",
-          `
-  function Button(props: { label: string; onClick(): void }) {
-    return (
-      <button id="button" onClick={props.onClick}>
-        {props.label}
-      </button>
-    );
-  }
-  `
+          `function Button(props: { label: string; onClick(): void }) {
+            return (
+              <button id="button" onClick={props.onClick}>
+                {props.label}
+              </button>
+            );
+          }`
         );
         await preview.show("src/Button.tsx:Button");
         const button = await preview.iframe.waitForSelector("#button");
         const events: PreviewEvent[] = [];
         preview.listen((e) => events.push(e));
         await button.click();
-        expect(events).toEqual(<PreviewEvent[]>[
+        expect(events).toEqual([
           {
             kind: "action",
             path: "onClick",
@@ -73,7 +71,7 @@ for (const reactVersion of [16, 17, 18]) {
         const events: PreviewEvent[] = [];
         preview.listen((e) => events.push(e));
         await button.click();
-        expect(events).toEqual(<PreviewEvent[]>[
+        expect(events).toEqual([
           {
             kind: "action",
             path: "onClick",
@@ -104,7 +102,7 @@ for (const reactVersion of [16, 17, 18]) {
         const events: PreviewEvent[] = [];
         preview.listen((e) => events.push(e));
         await link.click();
-        expect(events).toEqual(<PreviewEvent[]>[
+        expect(events).toEqual([
           {
             kind: "action",
             path: "https://www.google.com/",

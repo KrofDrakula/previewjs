@@ -80,6 +80,7 @@ export async function startPreview(
         const iframe = await getPreviewIframe(page);
         return iframe.waitForSelector(selector);
       },
+      waitForExpectedIframeRefresh: () => waitForExpectedIframeRefresh(page),
       async takeScreenshot(destinationPath: string) {
         const preview = await getPreviewIframe(page);
         preview.addStyleTag({
