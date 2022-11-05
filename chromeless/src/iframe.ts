@@ -11,5 +11,6 @@ export async function getPreviewIframe(page: playwright.Page) {
       frame = await iframe.contentFrame();
     }
   }
+  await frame.waitForLoadState("networkidle");
   return frame;
 }

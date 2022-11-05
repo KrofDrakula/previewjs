@@ -3,7 +3,8 @@ import { createController, PreviewEvent } from "@previewjs/iframe";
 export type Component = {
   filePath: string;
   componentName: string;
-  customVariantPropsSource: string;
+  defaultPropsSource: string;
+  propsAssignmentSource: string;
 };
 
 declare global {
@@ -29,7 +30,6 @@ window.onload = () => {
 window.renderComponent = (component: Component) => {
   controller.loadComponent({
     ...component,
-    defaultPropsSource: "{}",
     variantKey: null,
   });
 };

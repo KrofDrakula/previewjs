@@ -8,7 +8,11 @@ import {
   setupPreviewEventListener,
 } from "@previewjs/chromeless";
 import type { FrameworkPluginFactory } from "@previewjs/core";
-import { generateInvocation } from "@previewjs/properties";
+import type { PreviewEvent } from "@previewjs/iframe";
+import {
+  generateDefaultProps,
+  generatePropsAssignmentSource,
+} from "@previewjs/properties";
 import fs from "fs-extra";
 import getPort from "get-port";
 import path from "path";
@@ -59,7 +63,11 @@ export async function startPreview(
   let onRenderingDone = () => {
     // No-op by default.
   };
+  let eventListener = (_event: PreviewEvent) => {
+    // No-op by default.
+  };
   await setupPreviewEventListener(page, (event) => {
+    eventListener(event);
     if (event.kind === "rendering-done") {
       onRenderingDone();
     }
@@ -72,16 +80,6 @@ export async function startPreview(
         const iframe = await getPreviewIframe(page);
         return iframe.waitForSelector(selector);
       },
-      async waitForIdle() {
-        await page.waitForLoadState("networkidle");
-        try {
-          await (await getPreviewIframe(page)).waitForLoadState("networkidle");
-        } catch (e) {
-          // It's OK for the iframe to be replace by another one, in which case wait again.
-          await (await getPreviewIframe(page)).waitForLoadState("networkidle");
-        }
-      },
-      waitForExpectedIframeRefresh: () => waitForExpectedIframeRefresh(page),
       async takeScreenshot(destinationPath: string) {
         const preview = await getPreviewIframe(page);
         preview.addStyleTag({
@@ -126,13 +124,15 @@ export async function startPreview(
         });
         const destinationDirPath = path.dirname(destinationPath);
         await fs.mkdirp(destinationDirPath);
-        await this.waitForIdle();
         await page.screenshot({
           path: destinationPath,
         });
       },
     },
-    async show(componentId: string) {
+    listen(listener: (event: PreviewEvent) => void) {
+      eventListener = listener;
+    },
+    async show(componentId: string, propsAssignmentSource?: string) {
       const filePath = componentId.split(":")[0]!;
       const { components } = await workspace.localRpc(RPCs.DetectComponents, {
         filePaths: [filePath],
@@ -154,14 +154,21 @@ export async function startPreview(
         RPCs.ComputeProps,
         component
       );
-      const customVariantPropsSource = generateInvocation(
+      const defaultProps = generateDefaultProps(
         computePropsResponse.types.props,
-        [],
         computePropsResponse.types.all
       );
+      if (!propsAssignmentSource) {
+        propsAssignmentSource = generatePropsAssignmentSource(
+          computePropsResponse.types.props,
+          defaultProps.keys,
+          computePropsResponse.types.all
+        );
+      }
       await render(page, {
         ...component,
-        customVariantPropsSource,
+        defaultPropsSource: defaultProps.source,
+        propsAssignmentSource,
       });
       await new Promise<void>((resolve) => {
         onRenderingDone = resolve;
