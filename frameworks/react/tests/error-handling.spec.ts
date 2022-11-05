@@ -144,6 +144,97 @@ for (const reactVersion of [16, 17, 18]) {
         );
         await preview.iframe.waitForSelector("#recovered");
       });
+
+      test("fails correctly when encountering broken local imports before update", async () => {
+        await preview.fileManager.update(
+          "src/App.tsx",
+          `import logo from "./missing.svg";
+
+          export function App() {
+            return <div>{logo}</div>;
+          }`
+        );
+        const events: PreviewEvent[] = [];
+        preview.listen((e) => events.push(e));
+        await preview.show("src/App.tsx:App");
+        await preview.iframe.waitForExpectedIframeRefresh();
+        expect(events.filter((e) => e.kind === "log-message")).toEqual([
+          {
+            kind: "log-message",
+            level: "error",
+            message: expect.stringContaining(
+              `Failed to resolve import "./missing.svg" from "src${path.sep}App.tsx". Does the file exist?`
+            ),
+            timestamp: expect.anything(),
+          },
+          {
+            kind: "log-message",
+            level: "error",
+            message: expect.stringContaining(
+              "Failed to fetch dynamically imported module"
+            ),
+            timestamp: expect.anything(),
+          },
+          {
+            kind: "log-message",
+            level: "error",
+            message: expect.stringContaining(
+              "Failed to fetch dynamically imported module"
+            ),
+            timestamp: expect.anything(),
+          },
+        ]);
+        await preview.fileManager.update(
+          "src/App.tsx",
+          `import logo from "./logo.svg";
+
+          export function App() {
+            return <div id="recovered">{logo}</div>;
+          }`
+        );
+        await preview.iframe.waitForSelector("#recovered");
+      });
+
+      test("fails correctly when encountering broken local imports after update", async () => {
+        await preview.show("src/App.tsx:App");
+        await preview.iframe.waitForSelector(".App");
+        const events: PreviewEvent[] = [];
+        preview.listen((e) => events.push(e));
+        await preview.fileManager.update(
+          "src/App.tsx",
+          `import logo from "./missing.svg";
+  
+          export function App() {
+            return <div>{logo}</div>;
+          }`
+        );
+        await preview.iframe.waitForExpectedIframeRefresh();
+        expect(events.filter((e) => e.kind === "log-message")).toEqual([
+          {
+            kind: "log-message",
+            level: "error",
+            message: expect.stringContaining(
+              `Failed to resolve import "./missing.svg" from "src${path.sep}App.tsx". Does the file exist?`
+            ),
+            timestamp: expect.anything(),
+          },
+          {
+            kind: "log-message",
+            level: "error",
+            message: expect.stringContaining("Failed to reload /src/App.tsx."),
+            timestamp: expect.anything(),
+          },
+        ]);
+        await preview.fileManager.update(
+          "src/App.tsx",
+          `import logo from "./logo.svg";
+  
+          export function App() {
+            return <div id="recovered">{logo}</div>;
+          }`
+        );
+        await preview.iframe.waitForSelector("#recovered");
+      });
     });
   });
 }
