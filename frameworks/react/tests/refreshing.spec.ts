@@ -27,11 +27,20 @@ for (const reactVersion of [16, 17, 18]) {
         await preview.iframe.waitForSelector(".App-logo");
       });
 
-      test("switches to another component back and forth smoothly in different files", async () => {
+      test("switches to another component back and forth smoothly between different files", async () => {
         await preview.show("src/App.tsx:App");
         await preview.iframe.waitForSelector(".App");
         await preview.show("src/Other.tsx:Other");
         await preview.iframe.waitForSelector(".Other");
+        await preview.show("src/App.tsx:App");
+        await preview.iframe.waitForSelector(".App");
+      });
+
+      test("switches to another component back and forth smoothly within the same file", async () => {
+        await preview.show("src/App.tsx:App");
+        await preview.iframe.waitForSelector(".App");
+        await preview.show("src/App.tsx:Other");
+        await preview.iframe.waitForSelector(".OtherSameFile");
         await preview.show("src/App.tsx:App");
         await preview.iframe.waitForSelector(".App");
       });
