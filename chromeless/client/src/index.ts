@@ -9,17 +9,24 @@ export type Component = {
 declare global {
   interface Window {
     renderComponent(component: Component): void;
-    onIframeEvent(event: PreviewEvent): void;
+    onIframeEvent?(event: PreviewEvent): void;
   }
 }
 
-window.renderComponent = (component: Component) => {
-  const iframe = document.getElementById("iframe") as HTMLIFrameElement;
-  const controller = createController({
-    getIframe: () => iframe,
-    listener: window.onIframeEvent,
-  });
+const controller = createController({
+  getIframe: () => document.getElementById("iframe") as HTMLIFrameElement,
+  listener: (event) => {
+    if (window.onIframeEvent) {
+      window.onIframeEvent(event);
+    }
+  },
+});
+
+window.onload = () => {
   controller.start();
+};
+
+window.renderComponent = (component: Component) => {
   controller.loadComponent({
     ...component,
     defaultPropsSource: "{}",

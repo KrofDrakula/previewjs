@@ -5,9 +5,9 @@ import {
   createChromelessWorkspace,
   getPreviewIframe,
   render,
+  setupPreviewEventListener,
 } from "@previewjs/chromeless";
 import type { FrameworkPluginFactory } from "@previewjs/core";
-import type { PreviewEvent } from "@previewjs/iframe";
 import { generateInvocation } from "@previewjs/properties";
 import fs from "fs-extra";
 import getPort from "get-port";
@@ -16,13 +16,18 @@ import type playwright from "playwright";
 import { prepareFileManager } from "./file-manager";
 import { prepareTestDir } from "./test-dir";
 
+// Port allocated for the duration of the process.
+let port: number;
+
 export async function startPreview(
   frameworkPluginFactories: FrameworkPluginFactory[],
   page: playwright.Page,
   workspaceDirPath: string
 ) {
   const rootDirPath = await prepareTestDir(workspaceDirPath);
-  const port = await getPort();
+  if (!port) {
+    port = await getPort();
+  }
   const { reader, fileManager } = await prepareFileManager(
     rootDirPath,
     async () => {
@@ -50,10 +55,23 @@ export async function startPreview(
   const preview = await workspace.preview.start(async () => port);
   await page.goto(preview.url());
 
+  // This callback will be invoked each time a component is done rendering.
+  let onRenderingDone = () => {
+    // No-op by default.
+  };
+  await setupPreviewEventListener(page, (event) => {
+    if (event.kind === "rendering-done") {
+      onRenderingDone();
+    }
+  });
+
   return {
     fileManager,
     iframe: {
-      get: () => getPreviewIframe(page),
+      async waitForSelector(selector: string) {
+        const iframe = await getPreviewIframe(page);
+        return iframe.waitForSelector(selector);
+      },
       async waitForIdle() {
         await page.waitForLoadState("networkidle");
         try {
@@ -114,7 +132,7 @@ export async function startPreview(
         });
       },
     },
-    async show(componentId: string, listener?: (event: PreviewEvent) => void) {
+    async show(componentId: string) {
       const filePath = componentId.split(":")[0]!;
       const { components } = await workspace.localRpc(RPCs.DetectComponents, {
         filePaths: [filePath],
@@ -141,14 +159,13 @@ export async function startPreview(
         [],
         computePropsResponse.types.all
       );
-      await render(
-        page,
-        {
-          ...component,
-          customVariantPropsSource,
-        },
-        listener
-      );
+      await render(page, {
+        ...component,
+        customVariantPropsSource,
+      });
+      await new Promise<void>((resolve) => {
+        onRenderingDone = resolve;
+      });
     },
     async stop() {
       await preview.stop();

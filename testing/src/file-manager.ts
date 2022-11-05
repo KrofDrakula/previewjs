@@ -3,7 +3,6 @@ import {
   createMemoryReader,
   createStackedReader,
 } from "@previewjs/vfs";
-import assertNever from "assert-never";
 import fs from "fs-extra";
 import path from "path";
 
@@ -37,17 +36,11 @@ export function prepareFileManager(
       }
       const absoluteFilePath = path.join(rootDirPath, f);
       let text: string;
-      switch (content.kind) {
-        case "edit": {
-          const existing = await fs.readFile(absoluteFilePath, "utf8");
-          text = existing.replace(content.search, content.replace);
-          break;
-        }
-        case "replace":
-          text = content.text;
-          break;
-        default:
-          throw assertNever(content);
+      if (typeof content === "string") {
+        text = content;
+      } else {
+        const existing = await fs.readFile(absoluteFilePath, "utf8");
+        text = existing.replace(content.replace, content.with);
       }
       if (inMemoryOnly === true) {
         await memoryReader.updateFile(absoluteFilePath, text);
@@ -78,14 +71,10 @@ export interface FileManager {
     filePath: string,
     content:
       | {
-          kind: "edit";
-          search: string | RegExp;
-          replace: string;
+          replace: string | RegExp;
+          with: string;
         }
-      | {
-          kind: "replace";
-          text: string;
-        },
+      | string,
     options?: {
       inMemoryOnly?: boolean;
     }
