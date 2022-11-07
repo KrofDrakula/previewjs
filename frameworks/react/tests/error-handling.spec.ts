@@ -293,6 +293,82 @@ for (const reactVersion of [16, 17, 18]) {
         });
         await preview.iframe.waitForSelector(".App");
       });
+
+      test("fails correctly when encountering broken syntax (case 1)", async () => {
+        await preview.show("src/App.tsx:App");
+        await preview.iframe.waitForSelector(".App");
+        const events: PreviewEvent[] = [];
+        preview.listen((e) => events.push(e));
+        await preview.fileManager.update(
+          "src/App.tsx",
+          `export function App() {
+            return <divBroken</div>;
+          }`
+        );
+        await preview.iframe.waitForExpectedIframeRefresh();
+        expect(events.filter((e) => e.kind === "log-message")).toEqual([
+          {
+            kind: "log-message",
+            level: "error",
+            message: expect.stringContaining(
+              "App.tsx: Unexpected token (2:29)"
+            ),
+            timestamp: expect.anything(),
+          },
+          {
+            kind: "log-message",
+            level: "error",
+            message: expect.stringContaining("Failed to reload /src/App.tsx."),
+            timestamp: expect.anything(),
+          },
+        ]);
+        await preview.fileManager.update(
+          "src/App.tsx",
+          `export function App() {
+            return <div id="recovered">Fixed</div>;
+          }`
+        );
+        await preview.iframe.waitForSelector("#recovered");
+      });
+
+      test.only("fails correctly when encountering broken syntax (case 2)", async () => {
+        await preview.show("src/App.tsx:App");
+        await preview.iframe.waitForSelector(".App");
+        const events: PreviewEvent[] = [];
+        preview.listen((e) => events.push(e));
+        await preview.fileManager.update(
+          "src/App.tsx",
+          `export function App() {
+            return <ul>
+              <li id="recovered">Broken</li
+            </ul>
+          }`
+        );
+        await preview.iframe.waitForExpectedIframeRefresh();
+        expect(events.filter((e) => e.kind === "log-message")).toEqual([
+          {
+            kind: "log-message",
+            level: "error",
+            message: expect.stringContaining(
+              `App.tsx: Unexpected token, expected "jsxTagEnd"`
+            ),
+            timestamp: expect.anything(),
+          },
+          {
+            kind: "log-message",
+            level: "error",
+            message: expect.stringContaining("Failed to reload /src/App.tsx."),
+            timestamp: expect.anything(),
+          },
+        ]);
+        await preview.fileManager.update(
+          "src/App.tsx",
+          `export function App() {
+            return <div id="recovered">Fixed</div>;
+          }`
+        );
+        await preview.iframe.waitForSelector("#recovered");
+      });
     });
   });
 }
