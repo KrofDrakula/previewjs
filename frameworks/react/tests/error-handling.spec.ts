@@ -331,7 +331,7 @@ for (const reactVersion of [16, 17, 18]) {
         await preview.iframe.waitForSelector("#recovered");
       });
 
-      test.only("fails correctly when encountering broken syntax (case 2)", async () => {
+      test("fails correctly when encountering broken syntax (case 2)", async () => {
         await preview.show("src/App.tsx:App");
         await preview.iframe.waitForSelector(".App");
         const events: PreviewEvent[] = [];
@@ -360,6 +360,56 @@ for (const reactVersion of [16, 17, 18]) {
             message: expect.stringContaining("Failed to reload /src/App.tsx."),
             timestamp: expect.anything(),
           },
+        ]);
+        await preview.fileManager.update(
+          "src/App.tsx",
+          `export function App() {
+            return <div id="recovered">Fixed</div>;
+          }`
+        );
+        await preview.iframe.waitForSelector("#recovered");
+      });
+
+      test.only("fails correctly when encountering broken syntax (case 3)", async () => {
+        await preview.show("src/App.tsx:App");
+        await preview.iframe.waitForSelector(".App");
+        const events: PreviewEvent[] = [];
+        preview.listen((e) => events.push(e));
+        await preview.fileManager.update(
+          "src/App.tsx",
+          `export function App() {
+            if (true) {
+              throw new Error("Expected error");
+            }
+            return <div>Broken</div>;
+          }`
+        );
+        await preview.iframe.waitForExpectedIframeRefresh();
+        expect(events.filter((e) => e.kind === "log-message")).toEqual([
+          {
+            kind: "log-message",
+            level: "error",
+            message: expect.stringContaining("Error: Expected error"),
+            timestamp: expect.anything(),
+          },
+          {
+            kind: "log-message",
+            level: "error",
+            message: expect.stringContaining(
+              "React will try to recreate this component tree from scratch using the error boundary you provided"
+            ),
+            timestamp: expect.anything(),
+          },
+          ...(reactVersion === 18
+            ? [
+                {
+                  kind: "log-message",
+                  level: "error",
+                  message: expect.stringContaining("Error: Expected error"),
+                  timestamp: expect.anything(),
+                },
+              ]
+            : []),
         ]);
         await preview.fileManager.update(
           "src/App.tsx",
