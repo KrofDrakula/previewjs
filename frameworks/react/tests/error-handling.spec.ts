@@ -227,7 +227,7 @@ for (const reactVersion of [16, 17, 18]) {
         await preview.iframe.waitForSelector("#recovered");
       });
 
-      test("fails correctly when encountering broken syntax (case 3)", async () => {
+      test("fails correctly when encountering broken logic", async () => {
         await preview.show("src/App.tsx:App");
         await preview.iframe.waitForSelector(".App");
         await preview.fileManager.update(
