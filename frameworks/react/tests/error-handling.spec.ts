@@ -253,6 +253,72 @@ for (const reactVersion of [16, 17, 18]) {
         );
         await preview.iframe.waitForSelector("#recovered");
       });
+
+      test("fails correctly when encountering broken logic in imported module", async () => {
+        await preview.show("src/App.tsx:App");
+        await preview.iframe.waitForSelector(".App");
+        await preview.fileManager.update(
+          "src/Dependency.tsx",
+          `throw new Error("Expected error");
+
+          export const Dependency = () => {
+            return <div>Hello, World!</div>;
+          }`
+        );
+        await preview.iframe.waitForExpectedIframeRefresh();
+        preview.events.expectLoggedMessages([
+          "Expected error",
+          "Failed to reload /src/App.tsx.",
+        ]);
+        await preview.fileManager.update(
+          "src/Dependency.tsx",
+          `export const Dependency = () => {
+            return <div id="recovered">Hello, World!</div>;
+          }`
+        );
+        await preview.iframe.waitForSelector("#recovered");
+      });
+
+      test("fails correctly when encountering broken CSS", async () => {
+        await preview.show("src/App.tsx:App");
+        await preview.iframe.waitForSelector(".App");
+        await preview.fileManager.update("src/App.css", {
+          replace: " {",
+          with: " BROKEN",
+        });
+        await preview.iframe.waitForExpectedIframeRefresh();
+        // We don't expect to see any errors for pure CSS.
+        preview.events.expectLoggedMessages([]);
+        await preview.fileManager.update("src/App.css", {
+          replace: " BROKEN",
+          with: " {",
+        });
+        await preview.iframe.waitForSelector(".App");
+      });
+
+      test.only("fails correctly when encountering broken SASS", async ({
+        page,
+      }) => {
+        await preview.stop();
+        preview = await startPreview(
+          [pluginFactory],
+          page,
+          path.join(__dirname, "../../../test-apps/react-sass")
+        );
+        await preview.show("src/App.tsx:App");
+        await preview.iframe.waitForSelector(".App");
+        await preview.fileManager.update("src/App.scss", {
+          replace: " {",
+          with: " BROKEN",
+        });
+        await preview.iframe.waitForExpectedIframeRefresh();
+        preview.events.expectLoggedMessages([]);
+        await preview.fileManager.update("src/App.scss", {
+          replace: " BROKEN",
+          with: " {",
+        });
+        await preview.iframe.waitForSelector(".App");
+      });
     });
   });
 }
