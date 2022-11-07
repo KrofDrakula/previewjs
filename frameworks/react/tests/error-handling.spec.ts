@@ -235,6 +235,64 @@ for (const reactVersion of [16, 17, 18]) {
         );
         await preview.iframe.waitForSelector("#recovered");
       });
+
+      test("fails correctly when encountering broken CSS imports before update", async () => {
+        await preview.fileManager.update("src/App.tsx", {
+          replace: "App.css",
+          with: "App-missing.css",
+        });
+        const events: PreviewEvent[] = [];
+        preview.listen((e) => events.push(e));
+        await preview.show("src/App.tsx:App");
+        expect(events.filter((e) => e.kind === "log-message")).toEqual([
+          {
+            kind: "log-message",
+            level: "error",
+            message: expect.stringContaining(
+              "Failed to fetch dynamically imported module"
+            ),
+            timestamp: expect.anything(),
+          },
+          {
+            kind: "log-message",
+            level: "error",
+            message: expect.stringContaining(
+              "Failed to fetch dynamically imported module"
+            ),
+            timestamp: expect.anything(),
+          },
+        ]);
+        await preview.fileManager.update("src/App.tsx", {
+          replace: "App-missing.css",
+          with: "App.css",
+        });
+        await preview.iframe.waitForSelector(".App");
+      });
+
+      test("fails correctly when encountering broken CSS imports after update", async () => {
+        await preview.show("src/App.tsx:App");
+        await preview.iframe.waitForSelector(".App");
+        const events: PreviewEvent[] = [];
+        preview.listen((e) => events.push(e));
+        await preview.fileManager.update("src/App.tsx", {
+          replace: "App.css",
+          with: "App-missing.css",
+        });
+        await preview.iframe.waitForExpectedIframeRefresh();
+        expect(events.filter((e) => e.kind === "log-message")).toEqual([
+          {
+            kind: "log-message",
+            level: "error",
+            message: expect.stringContaining("Failed to reload /src/App.tsx."),
+            timestamp: expect.anything(),
+          },
+        ]);
+        await preview.fileManager.update("src/App.tsx", {
+          replace: "App-missing.css",
+          with: "App.css",
+        });
+        await preview.iframe.waitForSelector(".App");
+      });
     });
   });
 }
