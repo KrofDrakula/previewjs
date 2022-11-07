@@ -1905,6 +1905,7 @@ importers:
 
   testing:
     specifiers:
+      '@playwright/test': ^1.27.1
       '@previewjs/api': ^4.0.1
       '@previewjs/chromeless': ^0.0.0
       '@previewjs/core': ^8.1.0
@@ -1922,6 +1923,7 @@ importers:
       typescript: 4.8.4
       unbuild: 0.9.1
     dependencies:
+      '@playwright/test': 1.27.1
       '@previewjs/api': link:../api
       '@previewjs/chromeless': link:../chromeless
       '@previewjs/core': link:../core
@@ -8405,7 +8407,6 @@ packages:
     dependencies:
       '@types/node': 18.11.9
       playwright-core: 1.27.1
-    dev: true
 
   /@pmmmwh/react-refresh-webpack-plugin/0.4.3_t4ezke4netssl24gycl5qjajya:
     resolution: {integrity: sha512-br5Qwvh8D2OQqSXpd1g/xqXKnK0r+Jz6qVKBbWmpUcrbGOxUrf39V5oZ1876084CGn18uMdR5uvPqBv9UqtBjQ==}

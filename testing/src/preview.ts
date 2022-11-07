@@ -8,7 +8,6 @@ import {
   setupPreviewEventListener,
 } from "@previewjs/chromeless";
 import type { FrameworkPluginFactory } from "@previewjs/core";
-import type { PreviewEvent } from "@previewjs/iframe";
 import {
   generateDefaultProps,
   generatePropsAssignmentSource,
@@ -17,6 +16,7 @@ import fs from "fs-extra";
 import getPort from "get-port";
 import path from "path";
 import type playwright from "playwright";
+import { createPreviewEventListener } from "./events";
 import { prepareFileManager } from "./file-manager";
 import { prepareTestDir } from "./test-dir";
 
@@ -63,9 +63,7 @@ export async function startPreview(
   let onRenderingDone = () => {
     // No-op by default.
   };
-  let eventListener = (_event: PreviewEvent) => {
-    // No-op by default.
-  };
+  const [eventListener, events] = createPreviewEventListener();
   await setupPreviewEventListener(page, (event) => {
     eventListener(event);
     if (event.kind === "rendering-done") {
@@ -75,6 +73,7 @@ export async function startPreview(
 
   return {
     fileManager,
+    events,
     iframe: {
       async waitForSelector(selector: string) {
         const iframe = await getPreviewIframe(page);
@@ -129,9 +128,6 @@ export async function startPreview(
           path: destinationPath,
         });
       },
-    },
-    listen(listener: (event: PreviewEvent) => void) {
-      eventListener = listener;
     },
     async show(componentId: string, propsAssignmentSource?: string) {
       const filePath = componentId.split(":")[0]!;

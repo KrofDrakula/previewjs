@@ -1,5 +1,4 @@
-import test, { expect } from "@playwright/test";
-import type { PreviewEvent } from "@previewjs/iframe";
+import test from "@playwright/test";
 import { startPreview } from "@previewjs/testing";
 import path from "path";
 import pluginFactory from "../src";
@@ -26,8 +25,6 @@ for (const reactVersion of [16, 17, 18]) {
       test("intercepts logs", async () => {
         await preview.show("src/App.tsx:App");
         await preview.iframe.waitForSelector(".App");
-        const events: PreviewEvent[] = [];
-        preview.listen((e) => events.push(e));
         await preview.fileManager.update(
           "src/App.tsx",
           `function App() {
@@ -40,12 +37,8 @@ for (const reactVersion of [16, 17, 18]) {
           }`
         );
         await preview.iframe.waitForSelector("#update-1");
-        expect(events).toContainEqual({
-          kind: "log-message",
-          level: "log",
-          timestamp: expect.anything(),
-          message: "Render 1",
-        });
+        preview.events.expectLoggedMessages(["Render 1"], "log");
+        preview.events.clear();
         await preview.fileManager.update(
           "src/App.tsx",
           `function App() {
@@ -58,12 +51,7 @@ for (const reactVersion of [16, 17, 18]) {
           }`
         );
         await preview.iframe.waitForSelector("#update-2");
-        expect(events).toContainEqual({
-          kind: "log-message",
-          level: "log",
-          timestamp: expect.anything(),
-          message: "Render 2",
-        });
+        preview.events.expectLoggedMessages(["Render 2"], "log");
       });
     });
   });

@@ -29,6 +29,7 @@
     "build": "rimraf dist && tsc && unbuild"
   },
   "dependencies": {
+    "@playwright/test": "^1.27.1",
     "@previewjs/api": "^4.0.1",
     "@previewjs/chromeless": "^0.0.0",
     "@previewjs/core": "^8.1.0",

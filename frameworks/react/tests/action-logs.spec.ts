@@ -1,5 +1,4 @@
 import test, { expect } from "@playwright/test";
-import type { PreviewEvent } from "@previewjs/iframe";
 import { startPreview } from "@previewjs/testing";
 import path from "path";
 import pluginFactory from "../src";
@@ -36,10 +35,9 @@ for (const reactVersion of [16, 17, 18]) {
         );
         await preview.show("src/Button.tsx:Button");
         const button = await preview.iframe.waitForSelector("#button");
-        const events: PreviewEvent[] = [];
-        preview.listen((e) => events.push(e));
+        preview.events.clear();
         await button.click();
-        expect(events).toEqual([
+        expect(preview.events.get()).toEqual([
           {
             kind: "action",
             path: "onClick",
@@ -68,10 +66,9 @@ for (const reactVersion of [16, 17, 18]) {
           }`
         );
         const button = await preview.iframe.waitForSelector("#button");
-        const events: PreviewEvent[] = [];
-        preview.listen((e) => events.push(e));
+        preview.events.clear();
         await button.click();
-        expect(events).toEqual([
+        expect(preview.events.get()).toEqual([
           {
             kind: "action",
             path: "onClick",
@@ -99,10 +96,9 @@ for (const reactVersion of [16, 17, 18]) {
         );
         await preview.show("src/Link.tsx:Link");
         const link = await preview.iframe.waitForSelector("#link");
-        const events: PreviewEvent[] = [];
-        preview.listen((e) => events.push(e));
+        preview.events.clear();
         await link.click();
-        expect(events).toEqual([
+        expect(preview.events.get()).toEqual([
           {
             kind: "action",
             path: "https://www.google.com/",
