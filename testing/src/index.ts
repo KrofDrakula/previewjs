@@ -1,2 +1,2 @@
 export type { FileManager } from "./file-manager";
-export { startPreview } from "./preview";
+export { previewTest } from "./preview-test";

@@ -1,28 +1,19 @@
 import test from "@playwright/test";
-import { startPreview } from "@previewjs/testing";
+import { previewTest } from "@previewjs/testing";
 import path from "path";
 import pluginFactory from "../src";
 
 test.describe.configure({ mode: "parallel" });
 
-for (const reactVersion of [16, 17, 18]) {
-  test.describe(`v${reactVersion}`, () => {
-    test.describe("react/error handling", () => {
-      let preview: Awaited<ReturnType<typeof startPreview>>;
+const testApp = (suffix: string | number) =>
+  path.join(__dirname, "../../../test-apps/react" + suffix);
 
-      test.beforeEach(async ({ page }) => {
-        preview = await startPreview(
-          [pluginFactory],
-          page,
-          path.join(__dirname, "../../../test-apps/react" + reactVersion)
-        );
-      });
-      test.afterEach(async () => {
-        await preview?.stop();
-        preview = null!;
-      });
+test.describe("react/error handling", () => {
+  for (const reactVersion of [16, 17, 18]) {
+    test.describe(`v${reactVersion}`, () => {
+      const test = previewTest([pluginFactory], testApp(reactVersion));
 
-      test("handles syntax errors gracefully", async () => {
+      test("handles syntax errors gracefully", async (preview) => {
         await preview.show("src/App.tsx:App");
         await preview.iframe.waitForSelector(".App");
         await preview.fileManager.update("src/App.tsx", {
@@ -38,7 +29,7 @@ for (const reactVersion of [16, 17, 18]) {
         await preview.iframe.waitForSelector(".App");
       });
 
-      test("fails correctly when encountering broken module imports before update", async () => {
+      test("fails correctly when encountering broken module imports before update", async (preview) => {
         await preview.fileManager.update(
           "src/App.tsx",
           `import logo from "some-module";
@@ -65,7 +56,7 @@ for (const reactVersion of [16, 17, 18]) {
         await preview.iframe.waitForSelector("#recovered");
       });
 
-      test("fails correctly when encountering broken module imports after update", async () => {
+      test("fails correctly when encountering broken module imports after update", async (preview) => {
         await preview.show("src/App.tsx:App");
         await preview.iframe.waitForSelector(".App");
         await preview.fileManager.update(
@@ -92,7 +83,7 @@ for (const reactVersion of [16, 17, 18]) {
         await preview.iframe.waitForSelector("#recovered");
       });
 
-      test("fails correctly when encountering broken local imports before update", async () => {
+      test("fails correctly when encountering broken local imports before update", async (preview) => {
         await preview.fileManager.update(
           "src/App.tsx",
           `import logo from "./missing.svg";
@@ -119,7 +110,7 @@ for (const reactVersion of [16, 17, 18]) {
         await preview.iframe.waitForSelector("#recovered");
       });
 
-      test("fails correctly when encountering broken local imports after update", async () => {
+      test("fails correctly when encountering broken local imports after update", async (preview) => {
         await preview.show("src/App.tsx:App");
         await preview.iframe.waitForSelector(".App");
         await preview.fileManager.update(
@@ -146,7 +137,7 @@ for (const reactVersion of [16, 17, 18]) {
         await preview.iframe.waitForSelector("#recovered");
       });
 
-      test("fails correctly when encountering broken CSS imports before update", async () => {
+      test("fails correctly when encountering broken CSS imports before update", async (preview) => {
         await preview.fileManager.update("src/App.tsx", {
           replace: "App.css",
           with: "App-missing.css",
@@ -163,7 +154,7 @@ for (const reactVersion of [16, 17, 18]) {
         await preview.iframe.waitForSelector(".App");
       });
 
-      test("fails correctly when encountering broken CSS imports after update", async () => {
+      test("fails correctly when encountering broken CSS imports after update", async (preview) => {
         await preview.show("src/App.tsx:App");
         await preview.iframe.waitForSelector(".App");
         await preview.fileManager.update("src/App.tsx", {
@@ -179,7 +170,7 @@ for (const reactVersion of [16, 17, 18]) {
         await preview.iframe.waitForSelector(".App");
       });
 
-      test("fails correctly when encountering broken syntax (case 1)", async () => {
+      test("fails correctly when encountering broken syntax (case 1)", async (preview) => {
         await preview.show("src/App.tsx:App");
         await preview.iframe.waitForSelector(".App");
         await preview.fileManager.update(
@@ -202,7 +193,7 @@ for (const reactVersion of [16, 17, 18]) {
         await preview.iframe.waitForSelector("#recovered");
       });
 
-      test("fails correctly when encountering broken syntax (case 2)", async () => {
+      test("fails correctly when encountering broken syntax (case 2)", async (preview) => {
         await preview.show("src/App.tsx:App");
         await preview.iframe.waitForSelector(".App");
         await preview.fileManager.update(
@@ -227,7 +218,7 @@ for (const reactVersion of [16, 17, 18]) {
         await preview.iframe.waitForSelector("#recovered");
       });
 
-      test("fails correctly when encountering broken logic", async () => {
+      test("fails correctly when encountering broken logic", async (preview) => {
         await preview.show("src/App.tsx:App");
         await preview.iframe.waitForSelector(".App");
         await preview.fileManager.update(
@@ -254,7 +245,7 @@ for (const reactVersion of [16, 17, 18]) {
         await preview.iframe.waitForSelector("#recovered");
       });
 
-      test("fails correctly when encountering broken logic in imported module", async () => {
+      test("fails correctly when encountering broken logic in imported module", async (preview) => {
         await preview.show("src/App.tsx:App");
         await preview.iframe.waitForSelector(".App");
         await preview.fileManager.update(
@@ -279,7 +270,30 @@ for (const reactVersion of [16, 17, 18]) {
         await preview.iframe.waitForSelector("#recovered");
       });
 
-      test("fails correctly when encountering broken CSS", async () => {
+      test("fails correctly when file is missing after update", async (preview) => {
+        await preview.show("src/App.tsx:App");
+        await preview.iframe.waitForSelector(".App");
+        await preview.fileManager.rename("src/App.tsx", "src/App-renamed.tsx");
+        await preview.iframe.waitForExpectedIframeRefresh();
+        preview.events.expectLoggedMessages(["Failed to reload /src/App.tsx."]);
+      });
+
+      test("fails correctly when component is missing after update", async (preview) => {
+        await preview.show("src/App.tsx:App");
+        await preview.iframe.waitForSelector(".App");
+        await preview.fileManager.update(
+          "src/App.tsx",
+          `import React from 'react';
+
+          export const App2 = () => <div>Hello, World!</div>;`
+        );
+        await preview.iframe.waitForExpectedIframeRefresh();
+        preview.events.expectLoggedMessages([
+          "Error: No component named 'App'",
+        ]);
+      });
+
+      test("fails correctly when encountering broken CSS", async (preview) => {
         await preview.show("src/App.tsx:App");
         await preview.iframe.waitForSelector(".App");
         await preview.fileManager.update("src/App.css", {
@@ -295,30 +309,28 @@ for (const reactVersion of [16, 17, 18]) {
         });
         await preview.iframe.waitForSelector(".App");
       });
-
-      test.only("fails correctly when encountering broken SASS", async ({
-        page,
-      }) => {
-        await preview.stop();
-        preview = await startPreview(
-          [pluginFactory],
-          page,
-          path.join(__dirname, "../../../test-apps/react-sass")
-        );
-        await preview.show("src/App.tsx:App");
-        await preview.iframe.waitForSelector(".App");
-        await preview.fileManager.update("src/App.scss", {
-          replace: " {",
-          with: " BROKEN",
-        });
-        await preview.iframe.waitForExpectedIframeRefresh();
-        preview.events.expectLoggedMessages([]);
-        await preview.fileManager.update("src/App.scss", {
-          replace: " BROKEN",
-          with: " {",
-        });
-        await preview.iframe.waitForSelector(".App");
-      });
     });
-  });
-}
+  }
+
+  previewTest([pluginFactory], testApp("-sass"))(
+    "fails correctly when encountering broken SASS",
+    async (preview) => {
+      await preview.show("src/App.tsx:App");
+      await preview.iframe.waitForSelector(".App");
+      await preview.fileManager.update("src/App.scss", {
+        replace: " {",
+        with: " BROKEN",
+      });
+      await preview.iframe.waitForExpectedIframeRefresh();
+      preview.events.expectLoggedMessages([
+        "App.scss 4:21  root stylesheet",
+        "Failed to reload /src/App.scss.",
+      ]);
+      await preview.fileManager.update("src/App.scss", {
+        replace: " BROKEN",
+        with: " {",
+      });
+      await preview.iframe.waitForSelector(".App");
+    }
+  );
+});
