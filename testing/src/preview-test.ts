@@ -26,6 +26,8 @@ export const previewTest = (
       }
     });
   };
+  testFn.describe = (title: string, callback: () => void) =>
+    test.describe(title, callback);
   testFn.only = (
     title: string,
     testFunction: (

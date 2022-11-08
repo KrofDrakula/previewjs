@@ -1,28 +1,19 @@
 import test from "@playwright/test";
-import { startPreview } from "@previewjs/testing";
+import { previewTest } from "@previewjs/testing";
 import path from "path";
 import pluginFactory from "../src";
 
 test.describe.configure({ mode: "parallel" });
 
+const testApp = (suffix: string | number) =>
+  path.join(__dirname, "../../../test-apps/react" + suffix);
+
 for (const reactVersion of [16, 17, 18]) {
   test.describe(`v${reactVersion}`, () => {
     test.describe("react/default exports", () => {
-      let preview: Awaited<ReturnType<typeof startPreview>>;
+      const test = previewTest([pluginFactory], testApp(reactVersion));
 
-      test.beforeEach(async ({ page }) => {
-        preview = await startPreview(
-          [pluginFactory],
-          page,
-          path.join(__dirname, "../../../test-apps/react" + reactVersion)
-        );
-      });
-      test.afterEach(async () => {
-        await preview?.stop();
-        preview = null!;
-      });
-
-      test("renders default export component (arrow function)", async () => {
+      test("renders default export component (arrow function)", async (preview) => {
         await preview.fileManager.update(
           "src/App.tsx",
           `export default () => {
@@ -35,7 +26,7 @@ for (const reactVersion of [16, 17, 18]) {
         await preview.iframe.waitForSelector(".default-export");
       });
 
-      test("renders default export component (named function)", async () => {
+      test("renders default export component (named function)", async (preview) => {
         await preview.fileManager.update(
           "src/App.tsx",
           `export default function test() {
@@ -48,7 +39,7 @@ for (const reactVersion of [16, 17, 18]) {
         await preview.iframe.waitForSelector(".default-export");
       });
 
-      test("renders default export component (anonymous function)", async () => {
+      test("renders default export component (anonymous function)", async (preview) => {
         await preview.fileManager.update(
           "src/App.tsx",
           `export default function() {

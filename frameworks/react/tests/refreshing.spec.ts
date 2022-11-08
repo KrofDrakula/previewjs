@@ -1,33 +1,24 @@
 import test, { expect } from "@playwright/test";
-import { startPreview } from "@previewjs/testing";
+import { previewTest } from "@previewjs/testing";
 import path from "path";
 import pluginFactory from "../src";
 
 test.describe.configure({ mode: "parallel" });
 
+const testApp = (suffix: string | number) =>
+  path.join(__dirname, "../../../test-apps/react" + suffix);
+
 for (const reactVersion of [16, 17, 18]) {
   test.describe(`v${reactVersion}`, () => {
     test.describe("react/refreshing", () => {
-      let preview: Awaited<ReturnType<typeof startPreview>>;
+      const test = previewTest([pluginFactory], testApp(reactVersion));
 
-      test.beforeEach(async ({ page }) => {
-        preview = await startPreview(
-          [pluginFactory],
-          page,
-          path.join(__dirname, "../../../test-apps/react" + reactVersion)
-        );
-      });
-      test.afterEach(async () => {
-        await preview?.stop();
-        preview = null!;
-      });
-
-      test("renders top-level component", async () => {
+      test("renders top-level component", async (preview) => {
         await preview.show("src/App.tsx:App");
         await preview.iframe.waitForSelector(".App-logo");
       });
 
-      test("switches to another component back and forth smoothly between different files", async () => {
+      test("switches to another component back and forth smoothly between different files", async (preview) => {
         await preview.show("src/App.tsx:App");
         await preview.iframe.waitForSelector(".App");
         await preview.show("src/Other.tsx:Other");
@@ -36,7 +27,7 @@ for (const reactVersion of [16, 17, 18]) {
         await preview.iframe.waitForSelector(".App");
       });
 
-      test("switches to another component back and forth smoothly within the same file", async () => {
+      test("switches to another component back and forth smoothly within the same file", async (preview) => {
         await preview.show("src/App.tsx:App");
         await preview.iframe.waitForSelector(".App");
         await preview.show("src/App.tsx:Other");
@@ -49,7 +40,7 @@ for (const reactVersion of [16, 17, 18]) {
         test.describe(
           inMemoryOnly ? "in-memory file change" : "real file change",
           () => {
-            test("updates top-level component after file change", async () => {
+            test("updates top-level component after file change", async (preview) => {
               await preview.show("src/App.tsx:App");
               await preview.iframe.waitForSelector(".App");
               await preview.fileManager.update(
@@ -65,7 +56,7 @@ for (const reactVersion of [16, 17, 18]) {
               await preview.iframe.waitForSelector(".App-modified");
             });
 
-            test("updates dependency after file change", async () => {
+            test("updates dependency after file change", async (preview) => {
               await preview.show("src/App.tsx:App");
               await preview.iframe.waitForSelector(".Dependency");
               await preview.fileManager.update(
@@ -81,7 +72,7 @@ for (const reactVersion of [16, 17, 18]) {
               await preview.iframe.waitForSelector(".Dependency-modified");
             });
 
-            test("updates CSS after file change", async () => {
+            test("updates CSS after file change", async (preview) => {
               await preview.show("src/App.tsx:App");
               const dependencyComponent = await preview.iframe.waitForSelector(
                 ".Dependency"

@@ -1,28 +1,19 @@
 import test from "@playwright/test";
-import { startPreview } from "@previewjs/testing";
+import { previewTest } from "@previewjs/testing";
 import path from "path";
 import pluginFactory from "../src";
 
 test.describe.configure({ mode: "parallel" });
 
+const testApp = (suffix: string | number) =>
+  path.join(__dirname, "../../../test-apps/react" + suffix);
+
 for (const reactVersion of [16, 17, 18]) {
   test.describe(`v${reactVersion}`, () => {
     test.describe("react/console", () => {
-      let preview: Awaited<ReturnType<typeof startPreview>>;
+      const test = previewTest([pluginFactory], testApp(reactVersion));
 
-      test.beforeEach(async ({ page }) => {
-        preview = await startPreview(
-          [pluginFactory],
-          page,
-          path.join(__dirname, "../../../test-apps/react" + reactVersion)
-        );
-      });
-      test.afterEach(async () => {
-        await preview?.stop();
-        preview = null!;
-      });
-
-      test("intercepts logs", async () => {
+      test("intercepts logs", async (preview) => {
         await preview.show("src/App.tsx:App");
         await preview.iframe.waitForSelector(".App");
         await preview.fileManager.update(

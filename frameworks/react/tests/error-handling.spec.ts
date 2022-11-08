@@ -233,6 +233,7 @@ test.describe("react/error handling", () => {
         await preview.iframe.waitForExpectedIframeRefresh();
         preview.events.expectLoggedMessages([
           "Error: Expected error",
+          "Error: Expected error",
           "React will try to recreate this component tree from scratch using the error boundary you provided",
           ...(reactVersion === 18 ? ["Error: Expected error"] : []),
         ]);
